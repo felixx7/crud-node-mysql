@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%=title%></title>
+        <script type="text/javascript" src="/../js/jquery-1.10.2.min.js"></script>
+        <link rel="stylesheet" href="/../css/style.css">
+        <link rel="stylesheet" href="/../css/bootstrap.min.css">
+    </head>
+<body>
+<div class="container">
+<h1>Edit Biodata Karyawan</h1>
+<hr>
+<form method="post" action="" id="the-form">
+    <table>
+    <tr>
+        <td >Nama</td><td><input type="text" name="nama" value="<%=data[0].nama%>"></td>
+     </tr>
+    <tr>
+        <td>Jenis Kelamin &nbsp; &nbsp;</td><td><input type="text" name="jenis_kelamin" value="<%=data[0].jenis_kelamin%>"></td>
+     </tr>
+      <tr>
+        <td>Alamat</td><td><textarea name="alamat"><%=data[0].alamat%></textarea></td>
+     </tr> 
+     <tr>
+        <td></td>
+        <td>
+            &nbsp; <input type="button" class="btn btn-primary" value="Save" onClick="saveBiodata()">
+            &nbsp; <input type="button" class="btn btn-default" value="Back" onClick="back()">
+        </td>
+     </tr>
+    </table>
+</form>
+</div>
+<script>
+    
+        function saveBiodata(){
+           
+           $.ajax({
+            
+            url:"/api/biodata/"+<%=data[0].id%>,
+            type:"put",
+            data:$("#the-form").serialize(),
+            success:function(res){
+                
+                window.location.href = '/api/biodata';
+                return false;
+            },
+            error:function(xhr, status, error){
+                
+                console.log(xhr.responseText);
+                var err = '';
+                $.each(JSON.parse(xhr.responseText) , function(i, item) {
+                   
+                     err +='<li>'+item.msg+'</li>';
+                });
+                $(".err-area").html(err);    
+                return false;
+            }
+            
+           });
+        }
+        
+        function back(){
+           window.location.href = '/api/biodata'; 
+        }
+</script>
+</body>
+</html>
